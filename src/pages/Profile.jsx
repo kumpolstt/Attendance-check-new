@@ -3,10 +3,19 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { User, Mail, Shield, Bell, Settings, MapPin, Phone, Calendar } from 'lucide-react';
-import { MOCK_USERS } from '../data/mock';
+import { userService } from '../services/userService';
 
 export default function Profile() {
-  const user = MOCK_USERS[0]; // Admin profile
+  const [user, setUser] = React.useState(null);
+
+  React.useEffect(() => {
+    const users = userService.getUsers();
+    // For demo purposes, we'll just take the first admin or the first user
+    const admin = users.find(u => u.role === 'admin') || users[0];
+    setUser(admin);
+  }, []);
+
+  if (!user) return null;
 
   return (
     <div className="space-y-10">

@@ -4,32 +4,35 @@ import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Search, Filter, Check, X, Clock, AlertCircle, Save, Loader2, Calendar as CalendarIcon } from 'lucide-react';
-import { MOCK_USERS, MOCK_CLASSES } from '../data/mock';
+import { MOCK_CLASSES } from '../data/mock';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { attendanceService } from '../services/attendanceService';
+import { userService } from '../services/userService';
 
 export default function AttendanceMarking() {
   const [selectedClassId, setSelectedClassId] = React.useState(MOCK_CLASSES[0].id);
   const selectedClass = MOCK_CLASSES.find(c => c.id === selectedClassId) || MOCK_CLASSES[0];
   
-  // Filter students based on the selected class grade and section
-  const students = MOCK_USERS.filter(u => 
-    u.role === 'student' && 
-    u.grade === selectedClass.grade && 
-    u.section === selectedClass.section
-  );
-
   const [attendance, setAttendance] = React.useState({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(format(new Date(), 'yyyy-MM-dd'));
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [students, setStudents] = React.useState([]);
 
-  // Reset attendance when class changes
+  const filteredStudents = students.filter(s => 
+    s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (s.rollNo && s.rollNo.toString().includes(searchQuery))
+  );
+
+  // Load students based on the selected class
   React.useEffect(() => {
+    const classStudents = userService.getStudentsByClass(selectedClass.grade, selectedClass.section);
+    setStudents(classStudents);
     setAttendance({});
-  }, [selectedClassId]);
+  }, [selectedClassId, selectedClass.grade, selectedClass.section]);
 
   const mark = (id, status) => {
     setAttendance(prev => ({ ...prev, [id]: status }));
@@ -120,6 +123,8 @@ export default function AttendanceMarking() {
           <Input 
             placeholder="Search student by name or roll no..." 
             icon={<Search size={20} />}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className="flex gap-2">
@@ -144,7 +149,7 @@ export default function AttendanceMarking() {
       </section>
 
       <div className="grid grid-cols-1 gap-4">
-        {students.map((student, i) => (
+        {filteredStudents.map((student, i) => (
           <motion.div
             key={student.id}
             initial={{ opacity: 0, y: 10 }}
