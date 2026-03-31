@@ -1,11 +1,45 @@
-<div align="center">
+# ScholarFlow Attendance Management Dashboard
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+A comprehensive, editorial-inspired attendance management dashboard for academic institutions.
 
-  <h1>Built with AI Studio</h2>
+## Features
+- **Login Portal:** Secure administrative access with branding.
+- **Admin Dashboard:** High-level overview of enrollment, presence, and recent activity.
+- **User Management:** CRUD interface for managing students, teachers, and staff.
+- **Attendance Marking:** Daily ledger for marking student attendance with real-time status selection.
+- **Attendance History:** Audit logs and searchable history of past records.
+- **Reports & Analytics:** Monthly performance reviews and data-driven insights.
+- **User Profile:** Detailed administrative profile management.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## Tech Stack
+- **Framework:** React 19 + Vite
+- **Routing:** React Router 7
+- **Styling:** Tailwind CSS 4
+- **Animations:** Motion
+- **Icons:** Lucide React
+- **Utilities:** clsx, tailwind-merge, date-fns
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Getting Started
 
-</div>
+### Installation
+```bash
+npm install
+```
+
+### Development
+```bash
+npm run dev
+```
+
+### Build
+```bash
+npm run build
+```
+
+## Project Structure
+- `/src/components/layout`: Sidebar and main Layout components.
+- `/src/components/ui`: Reusable UI primitives (Button, Card, Badge, Input).
+- `/src/pages`: Individual feature pages.
+- `/src/data`: Mock data for demonstration.
+- `/src/lib`: Utility functions.
+- `/src/types.ts`: Core TypeScript interfaces.
